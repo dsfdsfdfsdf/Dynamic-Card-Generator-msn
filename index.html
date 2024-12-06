@@ -119,16 +119,16 @@
     </div>
     <div class="input-group">
       <label for="count">Number of Cards:</label>
-      <input type="number" id="count" placeholder="Enter number of cards">
+      <input type="number" id="count" value="10" max="100" placeholder="Enter number of cards">
     </div>
     <button onclick="generateCards()">Generate Cards</button>
     <div class="output" id="output"></div>
   </div>
   
   
-      <div class="footer" style="text-align: center; position: fixed; bottom: 0; width: 100%; background-color: #222;">
+  <div class="footer" style="text-align: center; position: fixed; bottom: 0; width: 100%; background-color: #222;">
     <p style="color: white;">Designed by <a href="https://t.me/mehdisedighinasab" target="_blank" style="color: #ff0062;">mehdisedighinasab </a></p>
-</div>
+  </div>
   
   <script>
     function getRandomMonthNumber() {
@@ -137,7 +137,7 @@
 
     function getRandomYear() {
       const currentYear = new Date().getFullYear();
-      const randomYear = Math.floor(Math.random() * 10) + currentYear;
+      const randomYear = Math.floor(Math.random() * 10) + currentYear; // Random year within 10 years
       return randomYear;
     }
 
@@ -147,7 +147,7 @@
     }
 
     function getRandomCVV() {
-      return Math.floor(Math.random() * 900 + 100);
+      return Math.floor(Math.random() * 900 + 100); // Random 3-digit number
     }
 
     function generateCards() {
