@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Credit Card Generator</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #000000, #2c2c34);
+      color: white;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background-color: rgba(20, 20, 20, 0.95);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+      text-align: center;
+    }
+    h1 {
+      color: #ff0062;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 3px 3px 10px rgba(255, 0, 98, 0.8);
+    }
+    .input-group {
+      margin-bottom: 20px;
+    }
+    .input-group label {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+      color: #ddd;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background-color: #2c2c34;
+      color: #fff;
+      font-size: 1rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+    .input-group input:focus {
+      outline: 2px solid #ff0062;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #ff0062, #e60055);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #e60055, #ff0062);
+    }
+    .output {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 15px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .card {
+      background-color: #333;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.5s ease;
+    }
+    .card span {
+      display: block;
+      color: #fff;
+    }
+    .card span strong {
+      color: #ff0062;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dynamic Card Generator</h1>
+    <div class="input-group">
+      <label for="base-number">Base Card Number:</label>
+      <input type="text" id="base-number" placeholder="Enter base card number">
+    </div>
+    <div class="input-group">
+      <label for="cvv">CVV:</label>
+      <input type="text" id="cvv" placeholder="Leave empty for random">
+    </div>
+    <div class="input-group">
+      <label for="count">Number of Cards:</label>
+      <input type="number" id="count" placeholder="Enter number of cards">
+    </div>
+    <button onclick="generateCards()">Generate Cards</button>
+    <div class="output" id="output"></div>
+  </div>
+  
+  
+      <div class="footer" style="text-align: center; position: fixed; bottom: 0; width: 100%; background-color: #222;">
+    <p style="color: white;">Designed by <a href="https://t.me/mehdisedighinasab" target="_blank" style="color: #ff0062;">mehdisedighinasab </a></p>
+</div>
+  
+  <script>
+    function getRandomMonthNumber() {
+      return Math.floor(Math.random() * 12 + 1).toString().padStart(2, '0');
+    }
+
+    function getRandomYear() {
+      const currentYear = new Date().getFullYear();
+      const randomYear = Math.floor(Math.random() * 10) + currentYear;
+      return randomYear;
+    }
+
+    function generateRandomNumber(base) {
+      const randomPart = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+      return base.slice(0, 12) + randomPart;
+    }
+
+    function getRandomCVV() {
+      return Math.floor(Math.random() * 900 + 100);
+    }
+
+    function generateCards() {
+      const baseNumber = document.getElementById('base-number').value;
+      const cvv = document.getElementById('cvv').value || getRandomCVV();
+      const count = parseInt(document.getElementById('count').value);
+      const output = document.getElementById('output');
+
+      if (!baseNumber || !count) {
+        alert('Please enter a base card number and the number of cards.');
+        return;
+      }
+
+      output.innerHTML = '';
+
+      for (let i = 0; i < count; i++) {
+        const cardNumber = generateRandomNumber(baseNumber);
+        const month = getRandomMonthNumber();
+        const year = getRandomYear();
+
+        const cardHTML = `
+          <div class="card">
+            <span><strong>Card Number:</strong> ${cardNumber}</span>
+            <span><strong>CVV:</strong> ${cvv}</span>
+            <span><strong>Expiry Date:</strong> ${month}/${year}</span>
+          </div>
+        `;
+        output.innerHTML += cardHTML;
+      }
+    }
+  </script>
+</body>
+</html>
