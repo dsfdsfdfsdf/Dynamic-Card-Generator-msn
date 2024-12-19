@@ -111,7 +111,7 @@
     <h1>Dynamic Card Generator</h1>
     <div class="input-group">
       <label for="base-number">Base Card Number:</label>
-      <input type="text" id="base-number" placeholder="Enter base card number">
+      <input type="text" id="base-number" placeholder="Enter base card number (e.g., 554351xxxxxxx66x)">
     </div>
     <div class="input-group">
       <label for="cvv">CVV:</label>
@@ -125,11 +125,10 @@
     <div class="output" id="output"></div>
   </div>
   
-  
   <div class="footer" style="text-align: center; position: fixed; bottom: 0; width: 100%; background-color: #222;">
     <p style="color: white;">Designed by <a href="https://t.me/mehdisedighinasab" target="_blank" style="color: #ff0062;">mehdisedighinasab </a></p>
   </div>
-  
+
   <script>
     function getRandomMonthNumber() {
       return Math.floor(Math.random() * 12 + 1).toString().padStart(2, '0');
@@ -142,8 +141,8 @@
     }
 
     function generateRandomNumber(base) {
-      const randomPart = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
-      return base.slice(0, 12) + randomPart;
+      // Replace 'x' with random numbers
+      return base.replace(/x/g, () => Math.floor(Math.random() * 10));
     }
 
     function getRandomCVV() {
@@ -152,7 +151,6 @@
 
     function generateCards() {
       const baseNumber = document.getElementById('base-number').value;
-      const cvv = document.getElementById('cvv').value || getRandomCVV();
       const count = parseInt(document.getElementById('count').value);
       const output = document.getElementById('output');
 
@@ -164,6 +162,7 @@
       output.innerHTML = '';
 
       for (let i = 0; i < count; i++) {
+        const cvv = getRandomCVV(); // CVV is now random for each card
         const cardNumber = generateRandomNumber(baseNumber);
         const month = getRandomMonthNumber();
         const year = getRandomYear();
