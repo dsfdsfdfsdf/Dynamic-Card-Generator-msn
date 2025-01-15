@@ -118,6 +118,10 @@
       <input type="text" id="cvv" placeholder="Leave empty for random">
     </div>
     <div class="input-group">
+      <label for="expiry-date">Expiry Date (MM/YYYY):</label>
+      <input type="text" id="expiry-date" placeholder="Leave empty for random">
+    </div>
+    <div class="input-group">
       <label for="count">Number of Cards:</label>
       <input type="number" id="count" value="10" max="100" placeholder="Enter number of cards">
     </div>
@@ -136,22 +140,23 @@
 
     function getRandomYear() {
       const currentYear = new Date().getFullYear();
-      const randomYear = Math.floor(Math.random() * 10) + currentYear; // Random year within 10 years
+      const randomYear = Math.floor(Math.random() * 10) + currentYear; 
       return randomYear;
     }
 
     function generateRandomNumber(base) {
-      // Replace 'x' with random numbers
+
       return base.replace(/x/g, () => Math.floor(Math.random() * 10));
     }
 
     function getRandomCVV() {
-      return Math.floor(Math.random() * 900 + 100); // Random 3-digit number
+      return Math.floor(Math.random() * 900 + 100); 
     }
 
     function generateCards() {
       const baseNumber = document.getElementById('base-number').value;
       const count = parseInt(document.getElementById('count').value);
+      const expiryDateInput = document.getElementById('expiry-date').value.trim();
       const output = document.getElementById('output');
 
       if (!baseNumber || !count) {
@@ -162,16 +167,23 @@
       output.innerHTML = '';
 
       for (let i = 0; i < count; i++) {
-        const cvv = getRandomCVV(); // CVV is now random for each card
+        const cvv = getRandomCVV(); 
         const cardNumber = generateRandomNumber(baseNumber);
-        const month = getRandomMonthNumber();
-        const year = getRandomYear();
+
+        let expiryDate;
+        if (expiryDateInput) {
+          expiryDate = expiryDateInput;
+        } else {
+          const month = getRandomMonthNumber();
+          const year = getRandomYear();
+          expiryDate = `${month}/${year}`;
+        }
 
         const cardHTML = `
           <div class="card">
             <span><strong>Card Number:</strong> ${cardNumber}</span>
             <span><strong>CVV:</strong> ${cvv}</span>
-            <span><strong>Expiry Date:</strong> ${month}/${year}</span>
+            <span><strong>Expiry Date:</strong> ${expiryDate}</span>
           </div>
         `;
         output.innerHTML += cardHTML;
