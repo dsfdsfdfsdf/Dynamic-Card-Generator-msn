@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dynamic Credit Card Generator</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       background: linear-gradient(135deg, #000000, #2c2c34);
       color: white;
@@ -17,7 +20,7 @@
       min-height: 100vh;
     }
     .container {
-      width: 100%;
+      width: 90%;
       max-width: 600px;
       background-color: rgba(20, 20, 20, 0.95);
       padding: 20px;
@@ -71,6 +74,21 @@
       transform: scale(1.05);
       background: linear-gradient(90deg, #e60055, #ff0062);
     }
+    .copy-btn {
+      width: auto;
+      padding: 8px 15px;
+      margin-bottom: 10px;
+      border-radius: 30px;
+      background: #333;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.9rem;
+    }
+    .copy-btn svg {
+      width: 16px;
+      height: 16px;
+    }
     .output {
       margin-top: 20px;
       background: rgba(255, 255, 255, 0.1);
@@ -78,31 +96,8 @@
       padding: 15px;
       max-height: 300px;
       overflow-y: auto;
-    }
-    .card {
-      background-color: #333;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 10px;
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
-      animation: fadeIn 0.5s ease;
-    }
-    .card span {
-      display: block;
-      color: #fff;
-    }
-    .card span strong {
-      color: #ff0062;
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      font-family: monospace;
+      white-space: pre-wrap;
     }
   </style>
 </head>
@@ -126,11 +121,20 @@
       <input type="number" id="count" value="10" max="100" placeholder="Enter number of cards">
     </div>
     <button onclick="generateCards()">Generate Cards</button>
+    <!-- دکمه کپی بالای باکس خروجی -->
+    <button class="copy-btn" onclick="copyOutput()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M10 1.5a.5.5 0 0 1 .5.5h2a.5.5 0 0 1 .5.5v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-1a.5.5 0 0 1 .5-.5h2z"/>
+        <path d="M4.5 0A.5.5 0 0 1 5 0h6a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H5A.5.5 0 0 1 4.5 1V.5z"/>
+        <path d="M14 3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-2.5a.5.5 0 0 1 0-1H14z"/>
+      </svg>
+      Copy
+    </button>
     <div class="output" id="output"></div>
   </div>
   
   <div class="footer" style="text-align: center; position: fixed; bottom: 0; width: 100%; background-color: #222;">
-    <p style="color: white;">Designed by <a href="https://t.me/mehdisedighinasab" target="_blank" style="color: #ff0062;">mehdisedighinasab </a></p>
+    <p style="color: white;">Designed by <a href="https://t.me/mehdisedighinasab" target="_blank" style="color: #ff0062;">mehdisedighinasab</a></p>
   </div>
 
   <script>
@@ -140,23 +144,23 @@
 
     function getRandomYear() {
       const currentYear = new Date().getFullYear();
-      const randomYear = Math.floor(Math.random() * 10) + currentYear; 
+      const randomYear = Math.floor(Math.random() * 10) + currentYear;
       return randomYear;
     }
 
     function generateRandomNumber(base) {
-
       return base.replace(/x/g, () => Math.floor(Math.random() * 10));
     }
 
     function getRandomCVV() {
-      return Math.floor(Math.random() * 900 + 100); 
+      return Math.floor(Math.random() * 900 + 100);
     }
 
     function generateCards() {
-      const baseNumber = document.getElementById('base-number').value;
+      let baseNumber = document.getElementById('base-number').value.trim();
       const count = parseInt(document.getElementById('count').value);
       const expiryDateInput = document.getElementById('expiry-date').value.trim();
+      const cvvInput = document.getElementById('cvv').value.trim();
       const output = document.getElementById('output');
 
       if (!baseNumber || !count) {
@@ -164,30 +168,52 @@
         return;
       }
 
+      // اطمینان از اینکه شماره کارت دقیقاً 16 کاراکتر باشد:
+      // اگر کمتر از 16 کاراکتر است، با استفاده از padEnd از سمت راست با 'x' پر می‌شود
+      if (baseNumber.length < 16) {
+        baseNumber = baseNumber.padEnd(16, 'x');
+      } else if (baseNumber.length > 16) {
+        baseNumber = baseNumber.substring(0, 16);
+      }
+
       output.innerHTML = '';
 
       for (let i = 0; i < count; i++) {
-        const cvv = getRandomCVV(); 
         const cardNumber = generateRandomNumber(baseNumber);
+        const cvv = cvvInput || getRandomCVV();
 
-        let expiryDate;
+        let month, year;
         if (expiryDateInput) {
-          expiryDate = expiryDateInput;
+          const parts = expiryDateInput.split('/');
+          if (parts.length === 2) {
+            month = parts[0].padStart(2, '0');
+            year = parts[1];
+          } else {
+            month = getRandomMonthNumber();
+            year = getRandomYear();
+          }
         } else {
-          const month = getRandomMonthNumber();
-          const year = getRandomYear();
-          expiryDate = `${month}/${year}`;
+          month = getRandomMonthNumber();
+          year = getRandomYear();
         }
 
-        const cardHTML = `
-          <div class="card">
-            <span><strong>Card Number:</strong> ${cardNumber}</span>
-            <span><strong>CVV:</strong> ${cvv}</span>
-            <span><strong>Expiry Date:</strong> ${expiryDate}</span>
-          </div>
-        `;
-        output.innerHTML += cardHTML;
+        // خروجی به فرمت مورد نظر: شماره کارت|ماه|سال|CVV
+        const cardString = `${cardNumber}|${month}|${year}|${cvv}`;
+        output.innerHTML += cardString + "<br>";
       }
+    }
+
+    function copyOutput() {
+      const outputText = document.getElementById('output').innerText;
+      if (!outputText.trim()) {
+        alert('No output to copy!');
+        return;
+      }
+      navigator.clipboard.writeText(outputText).then(() => {
+        alert('Copied to clipboard!');
+      }).catch(err => {
+        alert('Failed to copy!');
+      });
     }
   </script>
 </body>
