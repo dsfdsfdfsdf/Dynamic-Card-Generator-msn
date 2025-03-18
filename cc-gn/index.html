@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="title" content="CC Checker - Free credit card checker namso-gen.eu.org" />
+  <meta name="description" content="cc checker for free credit card numbers." />
+  <meta name="keywords" content="cc,checker,mass cc checker,bin,generated cc,credit card,live,dead" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="author" content="Saksham" />
+  <meta property="og:url" content="https://namso-gen.eu.org" />
+  <meta property="og:image" content="https://rawcdn.githack.com/OshekharO/Entertainment-Index/17d005915d5e20780a46aef227f08367ca8efb3a/img/apple-touch-icon.png" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="website" />
+  <meta name="copyright" content="Copyright © 2023 OshekharO" />
+  <meta property="og:image" content="https://rawcdn.githack.com/OshekharO/Entertainment-Index/17d005915d5e20780a46aef227f08367ca8efb3a/img/android-chrome-512x512.png" />
+  <link rel="shortcut icon" href="https://rawcdn.githack.com/OshekharO/Entertainment-Index/17d005915d5e20780a46aef227f08367ca8efb3a/img/favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://rawcdn.githack.com/OshekharO/Entertainment-Index/17d005915d5e20780a46aef227f08367ca8efb3a/img/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="https://rawcdn.githack.com/OshekharO/Entertainment-Index/17d005915d5e20780a46aef227f08367ca8efb3a/img/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="https://github.com/OshekharO/Entertainment-Index/blob/master/img/favicon-16x16.png" sizes="16x16" />
+  <title>CHECKER CC</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100&display=swap');
+    body {
+      font-family: Inter;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #616370;
+      background: #26272c;
+      height: 100%;
+      position: relative;
+      margin: 2.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="fs-3 fw-bold mb-5 text-uppercase mx-auto text-center text-light">Credit Card Checker</div>
+  
+  <div style="text-align:center;">
+    <button style="background:#ff0062;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;font-size:16px;" onclick="window.open('https://donut-msn.pages.dev/', '_blank')">donut</button>
+</div>
+
+  <form method="post" action="#" role="form" id="form">
+    <div class="box-body">
+      <div class="box-content">
+        <label for="cc" class="form-label fs-6 font-monospace badge bg-danger text-light">Card Numbers</label>
+        <div>
+          <textarea class="form-control" rows="10" id="cc" name="cc" title="53012724539xxxxx|05|2022|653" placeholder="53012724539xxxxx|05|2022|653" required></textarea>
+        </div>
+        <div class="button text-center mb-3 mt-3">
+          <button type="submit" name="valid" class="btn btn-outline-success text-light">START</button>
+          <button type="button" id="stop" class="btn btn-outline-danger text-light" disabled>STOP</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="box-title">
+      <h3 class="panel-title alert alert-primary font-monospace">Live - <span class="badge bg-success live">0</span></h3>
+    </div>
+    <div class="box-body">
+      <div class="box-content alert alert-success">
+        <div class="panel-body success"></div>
+      </div>
+    </div>
+
+
+    <div class="box-title">
+      <h3 class="panel-title alert alert-primary font-monospace">Die - <span class="badge bg-danger die">0</span></h3>
+    </div>
+    <div class="box-body">
+      <div class="box-content alert alert-danger">
+        <div class="panel-body danger"></div>
+      </div>
+    </div>
+   
+
+    <div class="box-title">
+      <h3 class="panel-title alert alert-primary font-monospace">Unknown - <span class="badge bg-warning unknown">0</span></h3>
+    </div>
+    <div class="box-body">
+      <div class="box-content alert alert-warning">
+        <div class="panel-body warning"></div>
+      </div>
+    </div>
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function() {
+      const $validButton = $('button[name="valid"]');
+      const $stopButton = $('button[id="stop"]');
+      const $ccInput = $('#cc');
+      const $form = $('#form');
+      const $live = $('.live');
+      const $die = $('.die');
+      const $unknown = $('.unknown');
+      const $info = $('.info');
+      
+      let isProcessing = false;
+      let shouldStop = false;
+
+      function updateCounter($element, value) {
+        $element.text(parseInt($element.text()) + value);
+      }
+
+      function displayMessage(selector, message) {
+        $(selector).prepend(message);
+      }
+      
+      function isValidLuhn(number) {
+        let sum = 0;
+        let isEven = false;
+        
+        for (let i = number.length - 1; i >= 0; i--) {
+          let digit = parseInt(number.charAt(i), 10);
+          
+          if (isEven) {
+            digit *= 2;
+            if (digit > 9) {
+              digit -= 9;
+            }
+          }
+          
+          sum += digit;
+          isEven = !isEven;
+        }
+        
+        return (sum % 10) === 0;
+      }
+
+      async function processCC(cc) {
+        try {
+
+          if (!isValidLuhn(cc.replace(/\D/g, ''))) {
+            displayMessage('.danger', `<div><b style='color:#FF0000;'>Invalid</b> | ${cc}  @mehdisedighinasab </div>`);
+            updateCounter($die, 1);
+            return;
+          }
+
+
+          const response = JSON.stringify({
+            error: Math.floor(Math.random() * 3) + 1,
+            msg: `<div><b style='color:#008000;'>Live</b> | ${cc} @mehdisedighinasab</div>`
+          });
+
+          const jsonResponse = JSON.parse(response);
+          
+          switch(jsonResponse.error) {
+            case 1:
+              displayMessage('.success', jsonResponse.msg);
+              updateCounter($live, 1);
+              break;
+            case 2:
+              displayMessage('.danger', jsonResponse.msg);
+              updateCounter($die, 1);
+              break;
+            case 3:
+              displayMessage('.warning', jsonResponse.msg);
+              updateCounter($unknown, 1);
+              break;
+            case 4:
+              $info.show().prepend(jsonResponse.msg + '<br>');
+              break;
+          }
+        } catch (error) {
+          console.error('Error processing CC:', error);
+          displayMessage('.danger', `<div><b style='color:#FF0000;'>Error</b> | ${cc} (Processing failed)</div>`);
+          updateCounter($unknown, 1);
+        }
+      }
+
+      async function processAllCC(ccList) {
+        for (let cc of ccList) {
+          if (shouldStop) break;
+          await processCC(cc.trim());
+          await new Promise(resolve => setTimeout(resolve, 100)); // Small delay between requests
+        }
+        finishProcessing();
+      }
+
+      function startProcessing() {
+        isProcessing = true;
+        shouldStop = false;
+        $validButton.attr('disabled', true);
+        $stopButton.attr('disabled', false);
+        $ccInput.attr('disabled', true);
+      }
+
+      function finishProcessing() {
+        isProcessing = false;
+        $validButton.attr('disabled', false);
+        $stopButton.attr('disabled', true);
+        $ccInput.attr('disabled', false).val('');
+      }
+
+      $form.submit(function(e) {
+        e.preventDefault();
+        if (isProcessing) return;
+
+        const ccList = $ccInput.val().split('\n').filter(cc => cc.trim() !== '');
+        if (ccList.length === 0) {
+          $info.show().html('<b>Error: No valid input</b>');
+          return;
+        }
+
+        startProcessing();
+        processAllCC(ccList);
+      });
+
+      $stopButton.click(function() {
+        shouldStop = true;
+      });
+    });
+  </script>
+  
+  <footer class="text-center mt-4" style="padding: 1rem 0; color: #fff;">
+  Designed by <a href="https://t.me/mehdisedighinasab" target="_blank" style="color: #fff; text-decoration: underline;">mehdisedighinasab</a>
+</footer>
+
+  
+  
+</body>
+  
+  
+  
+  
+</html>
