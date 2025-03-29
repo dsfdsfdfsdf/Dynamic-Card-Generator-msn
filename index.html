@@ -1,226 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Credit Card Generator</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      background: linear-gradient(135deg, #000000, #2c2c34);
-      color: white;
-      font-family: 'Arial', sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .container {
-      width: 90%;
-      max-width: 600px;
-      background-color: rgba(20, 20, 20, 0.95);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
-      text-align: center;
-    }
-    h1 {
-      color: #ff0062;
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      text-shadow: 3px 3px 10px rgba(255, 0, 98, 0.8);
-    }
-    .input-group {
-      margin-bottom: 20px;
-    }
-    .input-group label {
-      display: block;
-      font-size: 1.1rem;
-      margin-bottom: 5px;
-      color: #ddd;
-    }
-    .input-group input {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      background-color: #2c2c34;
-      color: #fff;
-      font-size: 1rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    }
-    .input-group input:focus {
-      outline: 2px solid #ff0062;
-    }
-    button {
-      width: 100%;
-      padding: 15px;
-      border: none;
-      border-radius: 30px;
-      background: linear-gradient(90deg, #ff0062, #e60055);
-      color: white;
-      font-size: 1.1rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s ease-in-out;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-    }
-    button:hover {
-      transform: scale(1.05);
-      background: linear-gradient(90deg, #e60055, #ff0062);
-    }
-    .copy-btn {
-      width: auto;
-      padding: 8px 15px;
-      margin-bottom: 10px;
-      border-radius: 30px;
-      background: #333;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.9rem;
-    }
-    .copy-btn svg {
-      width: 16px;
-      height: 16px;
-    }
-    .output {
-      margin-top: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 15px;
-      max-height: 300px;
-      overflow-y: auto;
-      font-family: monospace;
-      white-space: pre-wrap;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Dynamic Card Generator</h1>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Credit Card Generator</title>
 
-  <div style="text-align:center;">
-    <button style="background:#ff0062;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;font-size:16px;" onclick="window.open('https://donut-msn.pages.dev/', '_blank')">donut</button>
-</div>
+    <style>
 
-    
-    <div class="input-group">
-      <label for="base-number">Base Card Number:</label>
-      <input type="text" id="base-number" placeholder="Enter base card number (e.g., 554351xxxxxxx66x)">
-    </div>
-    <div class="input-group">
-      <label for="cvv">CVV:</label>
-      <input type="text" id="cvv" placeholder="Leave empty for random">
-    </div>
-    <div class="input-group">
-      <label for="expiry-date">Expiry Date (MM/YYYY):</label>
-      <input type="text" id="expiry-date" placeholder="Leave empty for random">
-    </div>
-    <div class="input-group">
-      <label for="count">Number of Cards:</label>
-      <input type="number" id="count" value="10" max="100" placeholder="Enter number of cards">
-    </div>
-    <button onclick="generateCards()">Generate Cards</button>
-    <!-- دکمه کپی بالای باکس خروجی -->
-    <button class="copy-btn" onclick="copyOutput()">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M10 1.5a.5.5 0 0 1 .5.5h2a.5.5 0 0 1 .5.5v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1v-1a.5.5 0 0 1 .5-.5h2z"/>
-        <path d="M4.5 0A.5.5 0 0 1 5 0h6a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H5A.5.5 0 0 1 4.5 1V.5z"/>
-        <path d="M14 3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1h-2.5a.5.5 0 0 1 0-1H14z"/>
-      </svg>
-      Copy
-    </button>
-    <div class="output" id="output"></div>
-  </div>
-  
-  <div class="footer" style="text-align: center; position: fixed; bottom: 0; width: 100%; background-color: #222;">
-    <p style="color: white;">Designed by <a href="https://t.me/mehdisedighinasab" target="_blank" style="color: #ff0062;">mehdisedighinasab</a></p>
-  </div>
-
-  <script>
-    function getRandomMonthNumber() {
-      return Math.floor(Math.random() * 12 + 1).toString().padStart(2, '0');
-    }
-
-    function getRandomYear() {
-      const currentYear = new Date().getFullYear();
-      const randomYear = Math.floor(Math.random() * 10) + currentYear;
-      return randomYear;
-    }
-
-    function generateRandomNumber(base) {
-      return base.replace(/x/g, () => Math.floor(Math.random() * 10));
-    }
-
-    function getRandomCVV() {
-      return Math.floor(Math.random() * 900 + 100);
-    }
-
-    function generateCards() {
-      let baseNumber = document.getElementById('base-number').value.trim();
-      const count = parseInt(document.getElementById('count').value);
-      const expiryDateInput = document.getElementById('expiry-date').value.trim();
-      const cvvInput = document.getElementById('cvv').value.trim();
-      const output = document.getElementById('output');
-
-      if (!baseNumber || !count) {
-        alert('Please enter a base card number and the number of cards.');
-        return;
-      }
-
-      // اطمینان از اینکه شماره کارت دقیقاً 16 کاراکتر باشد:
-      // اگر کمتر از 16 کاراکتر است، با استفاده از padEnd از سمت راست با 'x' پر می‌شود
-      if (baseNumber.length < 16) {
-        baseNumber = baseNumber.padEnd(16, 'x');
-      } else if (baseNumber.length > 16) {
-        baseNumber = baseNumber.substring(0, 16);
-      }
-
-      output.innerHTML = '';
-
-      for (let i = 0; i < count; i++) {
-        const cardNumber = generateRandomNumber(baseNumber);
-        const cvv = cvvInput || getRandomCVV();
-
-        let month, year;
-        if (expiryDateInput) {
-          const parts = expiryDateInput.split('/');
-          if (parts.length === 2) {
-            month = parts[0].padStart(2, '0');
-            year = parts[1];
-          } else {
-            month = getRandomMonthNumber();
-            year = getRandomYear();
-          }
-        } else {
-          month = getRandomMonthNumber();
-          year = getRandomYear();
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; 
+            height: 100%;
         }
 
-        // خروجی به فرمت مورد نظر: شماره کارت|ماه|سال|CVV
-        const cardString = `${cardNumber}|${month}|${year}|${cvv}`;
-        output.innerHTML += cardString + "<br>";
-      }
-    }
 
-    function copyOutput() {
-      const outputText = document.getElementById('output').innerText;
-      if (!outputText.trim()) {
-        alert('No output to copy!');
-        return;
-      }
-      navigator.clipboard.writeText(outputText).then(() => {
-        alert('Copied to clipboard!');
-      }).catch(err => {
-        alert('Failed to copy!');
-      });
-    }
-  </script>
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none; 
+            display: block; 
+        }
+    </style>
+</head>
+<body>
+
+    <iframe id="siteFrame" src="https://dynamic-card-generator-msn.10-354.workers.dev/"></iframe>
 </body>
 </html>
